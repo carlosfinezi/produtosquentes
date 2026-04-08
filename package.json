@@ -1,0 +1,23 @@
+{
+  "name": "pulsedados",
+  "version": "1.0.0",
+  "description": "Sistema de monitoramento de produtos do Mercado Livre",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js",
+    "db:migrate": "npx prisma migrate dev",
+    "db:generate": "npx prisma generate",
+    "db:studio": "npx prisma studio"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.20.0",
+    "axios": "^1.7.0",
+    "dotenv": "^16.4.0",
+    "express": "^4.21.0",
+    "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "prisma": "^5.20.0"
+  }
+}

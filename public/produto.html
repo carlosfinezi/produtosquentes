@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Produto — PulseDados ML</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <a href="/" class="logo">PulseDados <span>ML</span></a>
+  </header>
+
+  <div class="container">
+    <!-- Loading -->
+    <div id="loadingState" class="loading">Carregando dados do produto...</div>
+
+    <!-- Content (hidden until loaded) -->
+    <div id="productContent" style="display: none;">
+
+      <!-- Product Header -->
+      <div class="product-header">
+        <h1 id="productTitle">—</h1>
+        <div class="actions">
+          <a class="btn btn-primary" id="btnViewML" href="#" target="_blank">Ver no Mercado Livre</a>
+          <a class="btn btn-secondary" href="/">Voltar</a>
+        </div>
+      </div>
+
+      <!-- Info Grid: Image | Details | Price Cards -->
+      <div class="info-grid">
+        <!-- Image + Badges -->
+        <div>
+          <img class="product-image" id="productImage" src="" alt="" onerror="this.style.display='none'" />
+          <div style="margin-top: 12px; display: flex; gap: 6px; flex-wrap: wrap;" id="badges"></div>
+        </div>
+
+        <!-- Details -->
+        <div class="info-details" id="infoDetails"></div>
+
+        <!-- Price Cards -->
+        <div class="price-cards">
+          <div class="price-card">
+            <div class="price-label">Preco Atual</div>
+            <div class="price-value" style="color: var(--green);" id="priceNow">—</div>
+          </div>
+          <div class="price-card">
+            <div class="price-label">Preco Minimo Registrado</div>
+            <div class="price-value" style="color: var(--blue);" id="priceMin">—</div>
+          </div>
+          <div class="price-card">
+            <div class="price-label">Desconto Maximo Registrado</div>
+            <div class="price-value" style="color: var(--yellow);" id="discountMax">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Metrics Cards -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <h3>Receita Media</h3>
+          <div class="metric-row">
+            <span class="metric-label">Mensal</span>
+            <span class="metric-value" id="revenueMonthly">—</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">Semanal</span>
+            <span class="metric-value" id="revenueWeekly">—</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">Diaria</span>
+            <span class="metric-value" id="revenueDaily">—</span>
+          </div>
+        </div>
+        <div class="metric-card">
+          <h3>Vendas Medias</h3>
+          <div class="metric-row">
+            <span class="metric-label">Mensal (Total acumulado)</span>
+            <span class="metric-value" id="salesMonthly">—</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">Semanal</span>
+            <span class="metric-value" id="salesWeekly">—</span>
+          </div>
+          <div class="metric-row">
+            <span class="metric-label">Diaria</span>
+            <span class="metric-value" id="salesDaily">—</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- No History Banner -->
+      <div id="noHistoryBanner" style="display: none; background: var(--bg-card); border: 1px solid var(--yellow); border-radius: var(--radius); padding: 16px; margin-bottom: 24px; color: var(--yellow); font-size: 14px;">
+        Coleta iniciada hoje — metricas historicas disponiveis a partir de amanha.
+      </div>
+
+      <!-- Charts with Tabs -->
+      <div class="chart-card" style="margin-bottom: 24px;">
+        <div class="tabs">
+          <button class="tab active" data-tab="price">Preco</button>
+          <button class="tab" data-tab="sales">Vendas</button>
+          <button class="tab" data-tab="revenue">Receita</button>
+        </div>
+        <div style="position: relative; height: 350px;">
+          <canvas id="chartPrice" style="display: block;"></canvas>
+          <canvas id="chartSales" style="display: none;"></canvas>
+          <canvas id="chartRevenue" style="display: none;"></canvas>
+        </div>
+      </div>
+
+      <!-- Related Sellers -->
+      <div class="table-section" id="relatedSection" style="display: none;">
+        <h3 style="margin-bottom: 16px; color: var(--text-secondary);">Outros Vendedores do Mesmo Catalogo</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Vendedor</th>
+              <th>Preco</th>
+              <th>Vendas</th>
+              <th>Frete Gratis</th>
+              <th>Link</th>
+            </tr>
+          </thead>
+          <tbody id="relatedBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/produto.js"></script>
+</body>
+</html>

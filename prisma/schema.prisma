@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Product {
+  id               String   @id // MLB ID (ex: "MLB6047955038")
+  title            String
+  permalink        String?
+  thumbnail        String?
+  categoryId       String?
+  categoryName     String?
+  categoryPath     String?  // "Celulares > Acessorios > Fones"
+  sellerId         String?
+  sellerNickname   String?
+  condition        String?  // "new" ou "used"
+  listingType      String?  // "gold_special", "gold_pro", etc
+  catalogProductId String?  // ID do catalogo ML
+  freeShipping     Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  snapshots ProductSnapshot[]
+
+  @@index([categoryId])
+  @@index([sellerNickname])
+  @@index([catalogProductId])
+  @@map("products")
+}
+
+model ProductSnapshot {
+  id                Int      @id @default(autoincrement())
+  productId         String
+  product           Product  @relation(fields: [productId], references: [id])
+
+  price             Float
+  originalPrice     Float?
+  soldQuantity      Int      // ACUMULADO total de vendas (da API)
+  availableQuantity Int?
+  reviewsCount      Int?
+  reviewsRating     Float?
+
+  dailySales        Int?     // Vendas do dia (delta do soldQuantity)
+  dailyRevenue      Float?   // dailySales * price
+  discountPercent   Float?   // (originalPrice - price) / originalPrice * 100
+
+  collectedAt       DateTime @default(now())
+  collectedDate     DateTime // Apenas a data (YYYY-MM-DD), sem hora
+
+  @@unique([productId, collectedDate])
+  @@index([collectedDate])
+  @@index([productId, collectedDate])
+  @@map("product_snapshots")
+}
+
+model Search {
+  id         Int       @id @default(autoincrement())
+  term       String
+  category   String   @default("")
+  maxResults Int       @default(200)
+  isActive   Boolean   @default(true)
+  lastRunAt  DateTime?
+  createdAt  DateTime  @default(now())
+
+  @@unique([term, category])
+  @@map("searches")
+}
+
+model CollectionLog {
+  id             Int      @id @default(autoincrement())
+  searchTerm     String
+  productsFound  Int
+  snapshotsSaved Int
+  errors         Int      @default(0)
+  durationMs     Int
+  status         String   // "success", "partial", "error"
+  errorMessage   String?
+  createdAt      DateTime @default(now())
+
+  @@map("collection_logs")
+}
