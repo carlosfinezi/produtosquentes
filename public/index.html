@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PulseDados ML</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <!-- Header -->
+  <header class="header">
+    <div class="logo">PulseDados <span>ML</span></div>
+    <div class="search-bar">
+      <input type="text" id="searchInput" placeholder="Buscar produtos (ex: fone bluetooth)..." />
+      <button class="btn btn-primary" id="btnSearch">Buscar</button>
+      <button class="btn btn-secondary" id="btnSaveSearch" title="Salvar busca para coleta diaria">Salvar Busca</button>
+    </div>
+    <div class="status-indicator" id="statusIndicator">Carregando...</div>
+  </header>
+
+  <div class="container">
+    <!-- KPI Cards -->
+    <div class="kpi-grid" id="kpiGrid">
+      <div class="kpi-card">
+        <div class="label">Preco Medio</div>
+        <div class="value" id="kpiAvgPrice">—</div>
+        <div class="sub" id="kpiPriceRange"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Total de Vendas (30d)</div>
+        <div class="value green" id="kpiTotalSales">—</div>
+        <div class="sub" id="kpiAvgSales"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Receita Estimada (30d)</div>
+        <div class="value blue" id="kpiTotalRevenue">—</div>
+        <div class="sub" id="kpiAvgRevenue"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Com Frete Gratis</div>
+        <div class="value" id="kpiFreeShipping">—</div>
+        <div class="sub" id="kpiFreeShippingSub"></div>
+      </div>
+      <div class="kpi-card">
+        <div class="label">Com Desconto</div>
+        <div class="value yellow" id="kpiDiscounted">—</div>
+        <div class="sub" id="kpiDiscountedSub"></div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h3>Top Categorias por Receita</h3>
+        <canvas id="chartCategories"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Distribuicao de Precos</h3>
+        <canvas id="chartPrices"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Top 10 Mais Vendidos</h3>
+        <canvas id="chartTopSales"></canvas>
+      </div>
+      <div class="chart-card">
+        <h3>Top 10 por Receita</h3>
+        <canvas id="chartTopRevenue"></canvas>
+      </div>
+    </div>
+
+    <!-- Products Table -->
+    <div class="table-section">
+      <div class="table-header">
+        <div class="table-filters">
+          <select id="filterSort">
+            <option value="sales">Ordenar: Vendas</option>
+            <option value="revenue">Ordenar: Receita</option>
+            <option value="price">Ordenar: Preco</option>
+          </select>
+          <select id="filterOrder">
+            <option value="desc">Maior primeiro</option>
+            <option value="asc">Menor primeiro</option>
+          </select>
+          <select id="filterShipping">
+            <option value="">Frete: Todos</option>
+            <option value="free">Frete Gratis</option>
+          </select>
+        </div>
+        <div class="table-actions">
+          <button class="btn btn-secondary btn-sm" id="btnExportCSV">Exportar CSV</button>
+          <button class="btn btn-secondary btn-sm" id="btnExportJSON">Exportar JSON</button>
+        </div>
+      </div>
+
+      <div id="tableContainer">
+        <table>
+          <thead>
+            <tr>
+              <th>Produto</th>
+              <th>Preco</th>
+              <th>Vendas (30d)</th>
+              <th>Receita (30d)</th>
+              <th>Categoria</th>
+              <th>Frete</th>
+            </tr>
+          </thead>
+          <tbody id="productTableBody">
+            <tr><td colspan="6" class="empty-state">Faca uma busca para ver resultados</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- Saved Searches -->
+    <div class="table-section" style="margin-top: 24px;">
+      <h3 style="margin-bottom: 16px; color: var(--text-secondary);">Buscas Salvas</h3>
+      <div id="savedSearches">
+        <div class="empty-state">Nenhuma busca salva</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <script src="/js/utils.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>
